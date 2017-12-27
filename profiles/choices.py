@@ -39,7 +39,7 @@ LOCATION = (
     ('{}/residents/past/', ('Former location')),
     ('{}/visitors/', ('Visited')),
     ('{}/home-residents/', ('From')),
-    ('{}/residents-near/present/', ('Lives near')),
+    # ('{}/residents-near/present/', ('Lives near')), # dic-2017 no funciona
 )
 
 COMPANY = (
@@ -69,6 +69,6 @@ MONTHS = (
 )
 
 BORN = (
-    ('date', ('Born')),
+    ('', ('Born')),
     ('range', ('Born (range)')),
 )

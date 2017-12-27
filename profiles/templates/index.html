@@ -5,7 +5,7 @@
 </head>
 <body>
 	<h1>Profiles</h1>
-	{{query}}
+	{{ query }}
 
 	<form action={% url 'query' %} method="post">
     	{% csrf_token %}
