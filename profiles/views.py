@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .forms import QueryForm
-from urllib.request import urlopen
+from .SeleniumHelper import SeleniumHelper
+
+sh = SeleniumHelper()
 
 
 def index(request):
@@ -16,6 +18,8 @@ def query(request):
         data = form.cleaned_data
         searchquery = get_searchquery(data)
         searchurl = 'https://www.facebook.com/search/' + searchquery + 'intersect/'
+        login('lizzethcamargo@hotmail.com', 'lasquierobreggethmaria79')
+        print(get_html(searchurl))
         context = {'searchurl': searchurl}
     return render(request, 'result.html', context)
 
@@ -46,3 +50,14 @@ def get_date(data, range=False):
     elif data['born_year'] or data['born_month']:
         date = '{}/{}/date-2/users-born/'.format(data['born_year'], data['born_month']) if data['born_month'] else '{}/date/users-born/'.format(data['born_year'])
     return date
+
+
+def get_html(url):
+    sh.loadPage(url)
+    return ''
+
+
+def login(username, password, initial_url='https://www.facebook.com/', login_user_element_path='#email', login_pass_element_path='#pass'):
+    sh.loadPage(initial_url)
+    sh.selectAndWrite(login_user_element_path, username)
+    sh.submitForm(sh.selectAndWrite(login_pass_element_path, password))
