@@ -26,3 +26,4 @@ class QueryForm(forms.Form):
     born_range_from = forms.CharField(max_length=100, required=False)
     born_range_to = forms.CharField(max_length=100, required=False)
     name = forms.CharField(max_length=100, required=False)
+    limit = forms.CharField(max_length=100, required=False)

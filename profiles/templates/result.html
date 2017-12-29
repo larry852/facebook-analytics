@@ -5,7 +5,20 @@
 </head>
 <body>
 	<h1>Profiles</h1>
-	<a href="{{searchurl}}">{{searchurl}}</a>
+	<a href="{{searchurl}}" target="_blank">{{searchurl}}</a>
+	
+	<br><br>
+
+	{{ profiles|length }} profiles
+
+	<br><br>
+
+	{% for profile in profiles %}
+    	<a href="{{profile.url}}" target="_blank">
+    		<img src="{{profile.image}}" width="72" height="72" alt="{{profile.name}}" title="{{profile.name}}">
+    		{# <span>{{profile.name}}</span> #}
+    	</a>
+	{% endfor %}
 </form>
 </body>
 </html>
