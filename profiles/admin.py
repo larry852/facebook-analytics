@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Profile
+from .models import Profile, Query
 from django.utils.safestring import mark_safe
 
 
@@ -28,3 +28,19 @@ class AdminProfile(admin.ModelAdmin):
 
     get_query_html.short_description = 'query'
     get_query_html.admin_order_field = 'query__url'
+
+
+@admin.register(Query)
+class QueryProfile(admin.ModelAdmin):
+    list_display = ('url_html', 'date')
+    actions = ['delete', 'reporter']
+    list_display_links = None
+
+    def has_add_permission(self, request):
+        return False
+
+    def url_html(self, obj):
+        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.url, obj.url))
+
+    url_html.short_description = 'query'
+    url_html.admin_order_field = 'url'
