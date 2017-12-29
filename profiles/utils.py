@@ -1,5 +1,6 @@
 from . import selenium
 import json
+from .models import Profile
 
 
 def get_searchquery(data):
@@ -52,12 +53,12 @@ def get_data_profiles_search(searchurl, limit=None):
     name_profiles = selenium.get_elements_class_name('_32mo')
     profiles = []
     for index, value in enumerate(id_profiles):
-        id = json.loads(value.get_attribute('data-bt'))['id']
+        fb_id = json.loads(value.get_attribute('data-bt'))['id']
         profile = {
-            'id': id,
+            'fb_id': fb_id,
             'name': name_profiles[index].text,
             'image': image_profiles[index].get_attribute('src'),
-            'url': 'https://www.facebook.com/' + str(id)
+            'url': 'https://www.facebook.com/' + str(fb_id)
         }
         profiles.append(profile)
     return profiles
@@ -65,3 +66,9 @@ def get_data_profiles_search(searchurl, limit=None):
 
 def close_bot():
     selenium.close()
+
+
+def save_profiles(profiles):
+    for profile in profiles:
+        p = Profile(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'])
+        p.save()

@@ -19,6 +19,7 @@ def query(request):
         utils.login_facebook('lizzethcamargo@hotmail.com', 'lasquierobreggethmaria79')
         limit = int(data['limit']) if data['limit'] else None
         profiles = utils.get_data_profiles_search(searchurl, limit)
+        utils.save_profiles(profiles)
         utils.close_bot()
         context = {'searchurl': searchurl, 'profiles': profiles}
     return render(request, 'result.html', context)
