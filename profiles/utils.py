@@ -1,6 +1,6 @@
 from . import selenium
 import json
-from .models import Profile
+from .models import Profile, Query
 
 
 def get_searchquery(data):
@@ -68,7 +68,12 @@ def close_bot():
     selenium.close()
 
 
-def save_profiles(profiles):
+def save_query(url):
+    query = Query(url=url)
+    query.save()
+    return query
+
+
+def save_profiles(profiles, query):
     for profile in profiles:
-        p = Profile(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'])
-        p.save()
+        Profile(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'], query=query).save()
