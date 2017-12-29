@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
-    list_display = ('url_html', 'image_html', 'get_query_html')
+    list_display = ('url_html', 'image_html', 'get_query_html', 'get_date')
     actions = ['delete', 'reporter']
     list_display_links = None
 
@@ -28,6 +28,12 @@ class AdminProfile(admin.ModelAdmin):
 
     get_query_html.short_description = 'query'
     get_query_html.admin_order_field = 'query__url'
+
+    def get_date(self, obj):
+        return obj.query.date
+
+    get_date.short_description = 'date'
+    get_date.admin_order_field = 'query__date'
 
 
 @admin.register(Query)
