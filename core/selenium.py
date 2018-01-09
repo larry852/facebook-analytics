@@ -19,6 +19,10 @@ def submit_form(element):
     element.submit()
 
 
+def get_element_id(id):
+    return driver.find_element_by_id(id)
+
+
 def get_element_xpath(xpath):
     return driver.find_element_by_xpath(xpath)
 

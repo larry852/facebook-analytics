@@ -1,5 +1,6 @@
 from core import utils as core_utils
 from .models import Entity, Relation
+from django.shortcuts import redirect
 
 
 def generate(profiles):
@@ -12,6 +13,7 @@ def generate(profiles):
         save_pages(pages, profile)
         save_groups(groups, profile)
     core_utils.close_bot()
+    return redirect('/admin/topics/entity/')
 
 
 def save_pages(pages, profile):

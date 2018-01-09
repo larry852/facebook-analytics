@@ -20,7 +20,8 @@ def query(request):
         core_utils.login_facebook()
         limit = int(data['limit']) if data['limit'] else None
         profiles = core_utils.get_data_search(searchurl, limit)
-        query = utils.save_query(searchurl)
+        querys = utils.get_querys(data)
+        query = utils.save_query(querys)
         utils.save_profiles(profiles, query)
         core_utils.close_bot()
         context = {'searchurl': searchurl, 'profiles': profiles}

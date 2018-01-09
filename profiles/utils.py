@@ -19,6 +19,24 @@ def get_searchquery(data):
     return searchquery
 
 
+def get_querys(data):
+    querys = ''
+    querys += data['people'].replace('me/', '') if data['people'] else 'All/'
+    querys += data['gender'] if data['gender'] else 'All'
+    querys += data['interested_in'].replace('users-interested/', '') if data['interested_in'] else 'All/'
+    querys += data['relationship'].replace('users/', '') if data['relationship'] else 'All/'
+    querys += data['interest'] + '/' if data['interest'] else ''
+    querys += data['location_query'] + '/' if data['location_query'] else ''
+    querys += data['company_query'] + '/' if data['company_query'] else ''
+    querys += data['school_query'] + '/' if data['school_query'] else ''
+    querys += data['job_title'] + '/' if data['job_title'] else ''
+    querys += data['language'] + '/' if data['language'] else ''
+    querys += data['major'] + '/' if data['major'] else ''
+    querys += get_date_value(data) if not data['born'] else get_date_value(data, True)
+    querys += data['name'] + '/' if data['name'] else ''
+    return querys
+
+
 def get_date(data, range=False):
     date = ''
     if range:
@@ -26,6 +44,16 @@ def get_date(data, range=False):
         date += '{}/after/users-born/'.format(data['born_range_from']) if data['born_range_from'] else ''
     elif data['born_year'] or data['born_month']:
         date = '{}/{}/date-2/users-born/'.format(data['born_year'], data['born_month']) if data['born_month'] else '{}/date/users-born/'.format(data['born_year'])
+    return date
+
+
+def get_date_value(data, range=False):
+    date = ''
+    if range:
+        date += data['born_range_to'] + '/' if data['born_range_to'] else ''
+        date += data['born_range_from'] + '/' if data['born_range_from'] else ''
+    elif data['born_year'] or data['born_month']:
+        date = data['born_year'] + '/' + data['born_month'] + '/' if data['born_month'] else data['born_year'] + '/'
     return date
 
 
@@ -37,4 +65,4 @@ def save_query(url):
 
 def save_profiles(profiles, query):
     for profile in profiles:
-        Profile(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'], query=query).save()
+        Profile.objects.get_or_create(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'], query=query)

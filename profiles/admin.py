@@ -25,7 +25,12 @@ class AdminProfile(admin.ModelAdmin):
     image_html.short_description = 'image'
 
     def get_query_html(self, obj):
-        return mark_safe('<a target="_blank" href="{}"> {} </a>'.format(obj.query.url, obj.query.url))
+        querys = obj.query.url.split('/')
+        html = ''
+        for query in querys:
+            if query:
+                html += '<li> {} </li>'.format(query)
+        return mark_safe(html)
 
     get_query_html.short_description = 'query'
     get_query_html.admin_order_field = 'query__url'
