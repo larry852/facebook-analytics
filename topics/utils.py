@@ -1,18 +1,28 @@
 from core import utils as core_utils
-from .models import Page, Like
+from .models import Entity, Relation
 
 
-def generate(pages):
+def generate(profiles):
     core_utils.login_facebook()
-    for page in pages:
-        searchurl = 'https://www.facebook.com/search/{}/pages-liked'.format(page.fb_id)
-        pages = core_utils.get_data_search(searchurl, 20)
-        save_pages(pages, page)
+    for profile in profiles:
+        searchurl_pages = 'https://www.facebook.com/search/{}/pages-liked'.format(profile.fb_id)
+        searchurl_groups = 'https://www.facebook.com/search/{}/groups'.format(profile.fb_id)
+        pages = core_utils.get_data_search(searchurl_pages, 5)
+        groups = core_utils.get_data_search(searchurl_groups, 5)
+        save_pages(pages, profile)
+        save_groups(groups, profile)
     core_utils.close_bot()
 
 
 def save_pages(pages, profile):
     for page in pages:
-        page_model = Page(fb_id=page['fb_id'], name=pages['name'], image=pages['image'])
-        page_model.save()
-        Like(page=page_model, profile=profile)
+        entity, created = Entity.objects.get_or_create(fb_id=page['fb_id'], name=page['name'], image=page['image'], type='page')
+        entity.save()
+        Relation.objects.get_or_create(entity=entity, profile=profile)
+
+
+def save_groups(groups, profile):
+    for group in groups:
+        entity, created = Entity.objects.get_or_create(fb_id=group['fb_id'], name=group['name'], image=group['image'], type='group')
+        entity.save()
+        Relation.objects.get_or_create(entity=entity, profile=profile)

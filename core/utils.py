@@ -22,6 +22,8 @@ def get_data_search(searchurl, limit=None):
     ids = selenium.get_elements_class_name('_3u1')
     images = selenium.get_elements_class_name('_1glk')
     names = selenium.get_elements_class_name('_32mo')
+    if not names:
+        names = selenium.get_elements_class_name('_5bcu')
     data = []
     for index, value in enumerate(ids):
         fb_id = json.loads(value.get_attribute('data-bt'))['id']
