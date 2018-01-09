@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from .forms import QueryForm
 from . import utils
+from core import utils as core_utils
 
 
 def index(request):
@@ -15,12 +16,12 @@ def query(request):
     if form.is_valid():
         data = form.cleaned_data
         searchquery = utils.get_searchquery(data)
-        searchurl = 'https://www.facebook.com/search/' + searchquery + 'intersect/'
-        utils.login_facebook('lizzethcamargo@hotmail.com', 'lasquierobreggethmaria79')
+        searchurl = 'https://www.facebook.com/search/{}intersect/'.format(searchquery)
+        core_utils.login_facebook()
         limit = int(data['limit']) if data['limit'] else None
-        profiles = utils.get_data_profiles_search(searchurl, limit)
+        profiles = core_utils.get_data_search(searchurl, limit)
         query = utils.save_query(searchurl)
         utils.save_profiles(profiles, query)
-        utils.close_bot()
+        core_utils.close_bot()
         context = {'searchurl': searchurl, 'profiles': profiles}
     return render(request, 'result.html', context)

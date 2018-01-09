@@ -1,4 +1,4 @@
-from . import selenium
+from core import selenium
 import json
 from .models import Profile, Query
 
@@ -29,43 +29,6 @@ def get_date(data, range=False):
     elif data['born_year'] or data['born_month']:
         date = '{}/{}/date-2/users-born/'.format(data['born_year'], data['born_month']) if data['born_month'] else '{}/date/users-born/'.format(data['born_year'])
     return date
-
-
-def login_facebook(username, password):
-    selenium.init()
-    initial_url = 'https://www.facebook.com/'
-    login_user_element_xpath = '//*[@id="email"]'
-    login_pass_element_xpath = '//*[@id="pass"]'
-    selenium.load_page(initial_url)
-    element_user = selenium.get_element_xpath(login_user_element_xpath)
-    element_password = selenium.get_element_xpath(login_pass_element_xpath)
-    selenium.set_text_input(element_user, username)
-    selenium.set_text_input(element_password, password)
-    selenium.submit_form(element_password)
-
-
-def get_data_profiles_search(searchurl, limit=None):
-    selenium.init()
-    selenium.load_page(searchurl)
-    selenium.scrolling_down_facebook(limit)
-    id_profiles = selenium.get_elements_class_name('_3u1')
-    image_profiles = selenium.get_elements_class_name('_1glk')
-    name_profiles = selenium.get_elements_class_name('_32mo')
-    profiles = []
-    for index, value in enumerate(id_profiles):
-        fb_id = json.loads(value.get_attribute('data-bt'))['id']
-        profile = {
-            'fb_id': fb_id,
-            'name': name_profiles[index].text,
-            'image': image_profiles[index].get_attribute('src'),
-            'url': 'https://www.facebook.com/' + str(fb_id)
-        }
-        profiles.append(profile)
-    return profiles
-
-
-def close_bot():
-    selenium.close()
 
 
 def save_query(url):

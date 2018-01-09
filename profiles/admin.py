@@ -1,12 +1,13 @@
 from django.contrib import admin
 from .models import Profile, Query
 from django.utils.safestring import mark_safe
+from topics import utils as topics_utils
 
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
     list_display = ('url_html', 'image_html', 'get_query_html', 'get_date')
-    actions = ['delete', 'reporter']
+    actions = ['delete', 'topics']
     list_display_links = None
 
     def has_add_permission(self, request):
@@ -34,6 +35,11 @@ class AdminProfile(admin.ModelAdmin):
 
     get_date.short_description = 'date'
     get_date.admin_order_field = 'query__date'
+
+    def topics(self, request, queryset):
+        return topics_utils.generate(queryset)
+
+    topics.short_description = "Get topics"
 
 
 @admin.register(Query)
