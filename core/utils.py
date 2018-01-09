@@ -2,7 +2,8 @@ from core import selenium
 import json
 
 
-def login_facebook(username='lizzethcamargo@hotmail.com', password='lasquierobreggethmaria79'):
+# def login_facebook(username='lizzethcamargo@hotmail.com', password='lasquierobreggethmaria79'):
+def login_facebook(username='anjare97@hotmail.com', password='08jun1997ggg'):
     selenium.init()
     initial_url = 'https://www.facebook.com/'
     login_user_element_xpath = '//*[@id="email"]'
@@ -29,7 +30,10 @@ def get_data_search(searchurl, limit=None):
     images = selenium.get_elements_class_name('_1glk')
     names = selenium.get_elements_class_name('_32mo')
     if not names:
-        names = selenium.get_elements_class_name('_5bcu')
+        posible_names = selenium.get_elements_class_name('_5bcu')
+        for posible_name in posible_names:
+            if posible_name.get_attribute('innerHTML').startswith('<a href='):
+                names.append(posible_name)
     for index, value in enumerate(ids):
         fb_id = json.loads(value.get_attribute('data-bt'))['id']
         element = {

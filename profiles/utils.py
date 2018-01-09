@@ -21,10 +21,10 @@ def get_searchquery(data):
 
 def get_querys(data):
     querys = ''
-    querys += data['people'].replace('me/', '') if data['people'] else 'All/'
-    querys += data['gender'] if data['gender'] else 'All'
-    querys += data['interested_in'].replace('users-interested/', '') if data['interested_in'] else 'All/'
-    querys += data['relationship'].replace('users/', '') if data['relationship'] else 'All/'
+    querys += data['people'].replace('me/', '') if data['people'] else ''
+    querys += data['gender'] if data['gender'] else ''
+    querys += data['interested_in'].replace('users-interested/', '') if data['interested_in'] else ''
+    querys += data['relationship'].replace('users/', '') if data['relationship'] else ''
     querys += data['interest'] + '/' if data['interest'] else ''
     querys += data['location_query'] + '/' if data['location_query'] else ''
     querys += data['company_query'] + '/' if data['company_query'] else ''

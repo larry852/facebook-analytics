@@ -4,15 +4,19 @@ from django.shortcuts import redirect
 
 
 def generate(profiles):
+    import time
+    start_time = time.time()
+
     core_utils.login_facebook()
     for profile in profiles:
         searchurl_pages = 'https://www.facebook.com/search/{}/pages-liked'.format(profile.fb_id)
         searchurl_groups = 'https://www.facebook.com/search/{}/groups'.format(profile.fb_id)
-        pages = core_utils.get_data_search(searchurl_pages, 5)
-        groups = core_utils.get_data_search(searchurl_groups, 5)
+        pages = core_utils.get_data_search(searchurl_pages, 10)
+        groups = core_utils.get_data_search(searchurl_groups, 10)
         save_pages(pages, profile)
         save_groups(groups, profile)
-    core_utils.close_bot()
+    # core_utils.close_bot()
+    print("Get topics --- {} seconds ---".format(time.time() - start_time))
     return redirect('/admin/topics/entity/')
 
 

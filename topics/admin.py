@@ -24,7 +24,6 @@ class AdminEntity(admin.ModelAdmin):
         return Relation.objects.filter(entity=obj).count()
 
     get_count_fans.short_description = 'Fans'
-    get_count_fans.admin_order_field = 'name'
 
     def has_add_permission(self, request):
         return False
