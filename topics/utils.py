@@ -1,16 +1,18 @@
 from core import utils as core_utils
+from .models import Page, Like
 
 
-def generate(profiles):
+def generate(pages):
     core_utils.login_facebook()
-    for profile in profiles:
-        searchurl = 'https://www.facebook.com/search/{}/pages-liked'.format(profile.fb_id)
-        topics = core_utils.get_data_query(searchurl, 20)
-        print(topics)
-        # save_topics(topics, profile)
+    for page in pages:
+        searchurl = 'https://www.facebook.com/search/{}/pages-liked'.format(page.fb_id)
+        pages = core_utils.get_data_search(searchurl, 20)
+        save_pages(pages, page)
     core_utils.close_bot()
 
 
-def save_topics(topics, profile):
-    for topic in topics:
-        pass
+def save_pages(pages, profile):
+    for page in pages:
+        page_model = Page(fb_id=page['fb_id'], name=pages['name'], image=pages['image'])
+        page_model.save()
+        Like(page=page_model, profile=profile)

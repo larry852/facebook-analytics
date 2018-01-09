@@ -1,5 +1,3 @@
-from core import selenium
-import json
 from .models import Profile, Query
 
 
