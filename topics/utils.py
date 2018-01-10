@@ -1,10 +1,10 @@
 from core import utils as core_utils
 from .models import Entity, Relation
 from django.shortcuts import redirect
+import time
 
 
 def generate(profiles):
-    import time
     start_time = time.time()
 
     core_utils.login_facebook()
@@ -15,7 +15,8 @@ def generate(profiles):
         groups = core_utils.get_data_search(searchurl_groups, 10)
         save_pages(pages, profile)
         save_groups(groups, profile)
-    # core_utils.close_bot()
+    core_utils.close_bot()
+
     print("Get topics --- {} seconds ---".format(time.time() - start_time))
     return redirect('/admin/topics/entity/')
 

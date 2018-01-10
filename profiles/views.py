@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .forms import QueryForm
 from . import utils
 from core import utils as core_utils
+import time
 
 
 def index(request):
@@ -11,7 +12,6 @@ def index(request):
 
 
 def query(request):
-    import time
     start_time = time.time()
 
     context = {}

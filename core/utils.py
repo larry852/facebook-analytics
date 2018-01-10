@@ -22,6 +22,7 @@ def get_data_search(searchurl, limit=None):
     selenium.load_page(searchurl)
     try:
         selenium.get_element_id('empty_result_error')
+        print("No results --- {} ---".format(searchurl))
         return data
     except Exception:
         pass

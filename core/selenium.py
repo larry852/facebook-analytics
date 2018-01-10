@@ -3,12 +3,18 @@ from selenium import webdriver
 driver = None
 
 
-def init():
+def init(server=True):
     global driver
-    chrome_options = webdriver.ChromeOptions()
     prefs = {"profile.default_content_setting_values.notifications": 2}
+    chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option("prefs", prefs)
-    driver = webdriver.Chrome("/home/larry/.chromedriver", chrome_options=chrome_options) if driver is None else driver
+    if server:
+        driver = webdriver.Remote(
+            command_executor='http://127.0.0.1:4444/wd/hub',
+            desired_capabilities={'browserName': 'chrome', 'javascriptEnabled': True, 'ChromeOptions': {'prefs': prefs}}
+        ) if driver is None else driver
+    else:
+        driver = webdriver.Chrome(chrome_options=chrome_options) if driver is None else driver
 
 
 def load_page(page):
