@@ -49,15 +49,20 @@ class AdminProfile(admin.ModelAdmin):
 
 @admin.register(Query)
 class QueryProfile(admin.ModelAdmin):
-    list_display = ('url_html', 'date')
+    list_display = ('get_query_html', 'date')
     actions = ['delete', 'reporter']
     list_display_links = None
 
     def has_add_permission(self, request):
         return False
 
-    def url_html(self, obj):
-        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.url, obj.url))
+    def get_query_html(self, obj):
+        querys = obj.url.split('/')
+        html = ''
+        for query in querys:
+            if query:
+                html += '<li> {} </li>'.format(query)
+        return mark_safe(html)
 
-    url_html.short_description = 'query'
-    url_html.admin_order_field = 'url'
+    get_query_html.short_description = 'query'
+    get_query_html.admin_order_field = 'url'

@@ -5,9 +5,13 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Entity)
 class AdminEntity(admin.ModelAdmin):
-    list_display = ('url_html', 'image_html', 'type', 'get_count_fans')
+    list_display = ('image_html', 'url_html', 'type', 'fans')
     actions = ['delete']
+    ordering = ('-fans',)
     list_display_links = None
+
+    def has_add_permission(self, request):
+        return False
 
     def url_html(self, obj):
         return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.fb_id, obj.name))
@@ -20,20 +24,34 @@ class AdminEntity(admin.ModelAdmin):
 
     image_html.short_description = 'image'
 
-    def get_count_fans(self, obj):
-        return Relation.objects.filter(entity=obj).count()
-
-    get_count_fans.short_description = 'Fans'
-
-    def has_add_permission(self, request):
-        return False
-
 
 @admin.register(Relation)
 class AdminRelation(admin.ModelAdmin):
-    list_display = ('entity', 'profile')
+    list_display = ('image_html_entity', 'url_html_entity', 'url_html_profile', 'image_html_profile')
     actions = ['delete']
     list_display_links = None
 
     def has_add_permission(self, request):
         return False
+
+    def url_html_entity(self, obj):
+        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.entity.fb_id, obj.entity.name))
+
+    url_html_entity.short_description = 'Entity facebook'
+    url_html_entity.admin_order_field = 'entity__name'
+
+    def image_html_entity(self, obj):
+        return mark_safe('<image src="{}" />'.format(obj.entity.image))
+
+    image_html_entity.short_description = 'Entity image'
+
+    def url_html_profile(self, obj):
+        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.profile.fb_id, obj.profile.name))
+
+    url_html_profile.short_description = 'Profile facebook'
+    url_html_profile.admin_order_field = 'profile__name'
+
+    def image_html_profile(self, obj):
+        return mark_safe('<image src="{}" />'.format(obj.profile.image))
+
+    image_html_profile.short_description = 'Profile image'
