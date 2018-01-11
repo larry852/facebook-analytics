@@ -53,6 +53,8 @@ def get_data_topics_profile(profile, limit=None):
 def get_topics_groups(limit, current_url):
     data = []
     selenium.load_page(current_url + '/groups')
+    if current_url == selenium.get_current_url():
+        return data
     selenium.scrolling_down_facebook(limit, '_153f')
     groups = []
     possible_groups = selenium.get_elements_class_name('mbs')
@@ -76,6 +78,8 @@ def get_topics_groups(limit, current_url):
 def get_topics_pages(limit, current_url):
     data = []
     selenium.load_page(current_url + '/likes')
+    if current_url == selenium.get_current_url():
+        return data
     selenium.scrolling_down_facebook(limit, '_5rz')
     pages = []
     possible_pages = selenium.get_elements_class_name('fsl')

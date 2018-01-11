@@ -6,7 +6,7 @@ from topics import utils as topics_utils
 
 @admin.register(Profile)
 class AdminProfile(admin.ModelAdmin):
-    list_display = ('url_html', 'image_html', 'get_query_html', 'get_date')
+    list_display = ('image_html', 'url_html', 'get_query_html', 'get_date')
     actions = ['delete', 'topics']
     list_display_links = None
 
