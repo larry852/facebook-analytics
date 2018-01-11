@@ -45,16 +45,12 @@ def set_text_input(input, text):
     input.send_keys(text)
 
 
-def save_screenshoot(filePath):
+def save_screenshoot(filePath='/tmp/capture.png'):
     driver.save_screenshot(filePath)
 
 
 def scroll_down():
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-
-
-def take_screenshot():
-    driver.get_screenshot_as_file('/tmp/capture.png')
 
 
 def scrolling_down_facebook(limit):
