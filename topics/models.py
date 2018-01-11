@@ -22,8 +22,7 @@ class Relation(models.Model):
 
 
 @receiver([post_delete, post_save], sender=Relation)
-def count_fan(sender, **kwargs):
-    for entity in Entity.objects.all():
-        count = Relation.objects.filter(entity=entity).count()
-        entity.fans = count
-        entity.save()
+def count_fan(sender, instance, **kwargs):
+    count = Relation.objects.filter(entity=instance.entity).count()
+    instance.entity.fans = count
+    instance.entity.save()
