@@ -11,7 +11,7 @@ def init(server=True):
     if server:
         driver = webdriver.Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
-            desired_capabilities={'browserName': 'chrome', 'javascriptEnabled': True, 'ChromeOptions': {'prefs': prefs}}
+            desired_capabilities={'browserName': 'chrome', 'javascriptEnabled': True, 'chromeOptions': {'prefs': prefs}}
         ) if driver is None else driver
     else:
         driver = webdriver.Chrome(chrome_options=chrome_options) if driver is None else driver
@@ -53,9 +53,13 @@ def scroll_down():
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
 
+def take_screenshot():
+    driver.get_screenshot_as_file('/tmp/capture.png')
+
+
 def scrolling_down_facebook(limit):
     while True:
-        driver.execute_script('window.scrollTo(0, document.documentElement.scrollHeight);')
+        scroll_down()
         try:
             if limit and limit <= len(driver.find_elements_by_class_name('_3u1')):
                 break
