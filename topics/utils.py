@@ -9,7 +9,7 @@ def main(profiles):
 
     core_utils.login_facebook()
     for profile in profiles:
-        topics = core_utils.get_data_profile(profile)
+        topics = core_utils.get_data_topics_profile(profile)
         save_topics(topics, profile)
     core_utils.close_bot()
 

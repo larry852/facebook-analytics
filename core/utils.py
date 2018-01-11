@@ -41,13 +41,17 @@ def get_data_search_profiles(searchurl, limit=None):
     return data
 
 
-def get_data_profile(profile, limit=None):
-    data = []
+def get_data_topics_profile(profile, limit=None):
     selenium.init()
     selenium.load_page('https://www.facebook.com/{}'.format(profile.fb_id))
     current_url = selenium.get_current_url()
+    groups = get_topics_groups(limit, current_url)
+    pages = get_topics_pages(limit, current_url)
+    return groups + pages
 
-    # get groups
+
+def get_topics_groups(limit, current_url):
+    data = []
     selenium.load_page(current_url + '/groups')
     selenium.scrolling_down_facebook(limit, '_153f')
     groups = []
@@ -66,8 +70,11 @@ def get_data_profile(profile, limit=None):
             'type': 'group'
         }
         data.append(element)
+    return data
 
-    # get pages
+
+def get_topics_pages(limit, current_url):
+    data = []
     selenium.load_page(current_url + '/likes')
     selenium.scrolling_down_facebook(limit, '_5rz')
     pages = []
