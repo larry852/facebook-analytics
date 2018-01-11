@@ -10,7 +10,7 @@ def main(data):
     searchurl = 'https://www.facebook.com/search/{}intersect/'.format(searchquery)
     core_utils.login_facebook()
     limit = int(data['limit']) if data['limit'] else None
-    profiles = core_utils.get_data_search(searchurl, limit)
+    profiles = core_utils.get_data_search_profiles(searchurl, limit)
     list_querys = get_querys(data)
     query = save_query(list_querys)
     save_profiles(profiles, query)

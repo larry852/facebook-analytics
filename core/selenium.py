@@ -41,6 +41,14 @@ def get_elements_class_name(class_name):
     return driver.find_elements_by_class_name(class_name)
 
 
+def get_child_tag_name(element, tag_name):
+    return element.find_element_by_tag_name(tag_name)
+
+
+def get_childs_tag_name(element, tag_name):
+    return element.find_elements_by_tag_name(tag_name)
+
+
 def set_text_input(input, text):
     input.send_keys(text)
 
@@ -53,13 +61,13 @@ def scroll_down():
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
 
-def scrolling_down_facebook(limit):
+def scrolling_down_facebook(limit, main_element, finish_element):
     while True:
         scroll_down()
         try:
-            if limit and limit <= len(driver.find_elements_by_class_name('_3u1')):
+            if limit and limit <= len(driver.find_elements_by_class_name(main_element)):
                 break
-            driver.find_element_by_class_name('_24j')
+            driver.find_element_by_class_name(finish_element)
             break
         except Exception:
             continue
