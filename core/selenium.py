@@ -3,7 +3,7 @@ from selenium import webdriver
 driver = None
 
 
-def init(server=True):
+def init(server=False):
     global driver
     prefs = {"profile.default_content_setting_values.notifications": 2}
     chrome_options = webdriver.ChromeOptions()
@@ -73,3 +73,7 @@ def close():
     global driver
     driver.quit()
     driver = None
+
+
+def get_current_url():
+    return driver.current_url

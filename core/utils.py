@@ -46,5 +46,40 @@ def get_data_search(searchurl, limit=None):
     return data
 
 
+def get_data_profile(profile, limit=None):
+    data = []
+    selenium.init()
+    selenium.load_page('https://www.facebook.com/{}'.format(profile.fb_id))
+    current_url = selenium.get_current_url()
+    selenium.load_page(current_url + '/groups')
+    selenium.scroll_down()
+    selenium.load_page(current_url + '/likes')
+    selenium.scroll_down()
+    # try:
+    #     selenium.get_element_id('empty_result_error')
+    #     print("No results --- {} ---".format(url))
+    #     return data
+    # except Exception:
+    #     pass
+    # ids = selenium.get_elements_class_name('_3u1')
+    # images = selenium.get_elements_class_name('_1glk')
+    # names = selenium.get_elements_class_name('_32mo')
+    # if not names:
+    #     posible_names = selenium.get_elements_class_name('_5bcu')
+    #     for posible_name in posible_names:
+    #         if posible_name.get_attribute('innerHTML').startswith('<a href='):
+    #             names.append(posible_name)
+    # for index, value in enumerate(ids):
+    #     fb_id = json.loads(value.get_attribute('data-bt'))['id']
+    #     element = {
+    #         'fb_id': fb_id,
+    #         'name': names[index].text,
+    #         'image': images[index].get_attribute('src'),
+    #         'url': 'https://www.facebook.com/' + str(fb_id)
+    #     }
+    #     data.append(element)
+    return data
+
+
 def close_bot():
     selenium.close()
