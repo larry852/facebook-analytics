@@ -76,14 +76,14 @@ def get_data_profile(profile, limit=None):
     for possible_page in possible_pages:
         if possible_page.get_attribute('innerHTML').startswith('<a href='):
             pages.append(possible_page)
-    images = selenium.get_elements_class_name('_s0')
+    images = selenium.get_elements_class_name('_8o')
     for index, page in enumerate(pages):
         fb_id_html = selenium.get_child_tag_name(page, 'a').get_attribute('data-hovercard')
         fb_id = fb_id_html[fb_id_html.find('?id='):].replace('?id=', '')
         element = {
             'fb_id': fb_id,
             'name': page.text,
-            'image': images[index].get_attribute('src'),
+            'image': selenium.get_child_tag_name(images[index], 'img').get_attribute('src'),
             'url': 'https://www.facebook.com/' + str(fb_id),
             'type': 'page'
         }

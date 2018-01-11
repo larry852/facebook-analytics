@@ -1,4 +1,5 @@
 from selenium import webdriver
+import time
 
 driver = None
 
@@ -59,16 +60,21 @@ def save_screenshoot(filePath='/tmp/capture.png'):
 
 def scroll_down():
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+    time.sleep(2)
 
 
-def scrolling_down_facebook(limit, main_element, finish_element):
+def scrolling_down_facebook(limit, main_element):
+    old_page = driver.page_source
     while True:
         scroll_down()
         try:
             if limit and limit <= len(driver.find_elements_by_class_name(main_element)):
                 break
-            driver.find_element_by_class_name(finish_element)
-            break
+            new_page = driver.page_source
+            if new_page != old_page:
+                old_page = new_page
+            else:
+                break
         except Exception:
             continue
 
