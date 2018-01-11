@@ -25,7 +25,7 @@ def get_data_search_profiles(searchurl, limit=None):
         return data
     except Exception:
         pass
-    selenium.scrolling_down_facebook(limit, '_3u1', '_24j')
+    selenium.scrolling_down_facebook(limit, '_3u1')
     ids = selenium.get_elements_class_name('_3u1')
     images = selenium.get_elements_class_name('_1glk')
     names = selenium.get_elements_class_name('_32mo')
@@ -46,11 +46,10 @@ def get_data_profile(profile, limit=None):
     selenium.init()
     selenium.load_page('https://www.facebook.com/{}'.format(profile.fb_id))
     current_url = selenium.get_current_url()
-    finish_element = 'uiHeaderTop'
 
     # get groups
     selenium.load_page(current_url + '/groups')
-    selenium.scrolling_down_facebook(limit, '_153f', finish_element)
+    selenium.scrolling_down_facebook(limit, '_153f')
     groups = []
     possible_groups = selenium.get_elements_class_name('mbs')
     for possible_group in possible_groups:
@@ -70,7 +69,7 @@ def get_data_profile(profile, limit=None):
 
     # get pages
     selenium.load_page(current_url + '/likes')
-    selenium.scrolling_down_facebook(limit, '_5rz', finish_element)
+    selenium.scrolling_down_facebook(limit, '_5rz')
     pages = []
     possible_pages = selenium.get_elements_class_name('fsl')
     for possible_page in possible_pages:
