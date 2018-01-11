@@ -2,7 +2,6 @@ from core import selenium
 import json
 
 
-# def login_facebook(username='lizzethcamargo@hotmail.com', password='lasquierobreggethmaria79'):
 def login_facebook(username='anjare97@hotmail.com', password='08jun1997ggg'):
     selenium.init()
     initial_url = 'https://www.facebook.com/'

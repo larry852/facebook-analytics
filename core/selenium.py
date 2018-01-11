@@ -55,7 +55,7 @@ def scroll_down():
 
 def scrolling_down_facebook(limit):
     while True:
-        driver.execute_script('window.scrollTo(0, document.body.scrollHeight);')
+        driver.execute_script('window.scrollTo(0, document.documentElement.scrollHeight);')
         try:
             if limit and limit <= len(driver.find_elements_by_class_name('_3u1')):
                 break
