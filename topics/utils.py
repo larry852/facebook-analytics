@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 import time
 
 
-def generate(profiles):
+def main(profiles):
     start_time = time.time()
 
     core_utils.login_facebook()

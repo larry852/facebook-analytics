@@ -42,7 +42,7 @@ class AdminProfile(admin.ModelAdmin):
     get_date.admin_order_field = 'query__date'
 
     def topics(self, request, queryset):
-        return topics_utils.generate(queryset)
+        return topics_utils.main(queryset)
 
     topics.short_description = "Get topics"
 
