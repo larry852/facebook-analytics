@@ -56,7 +56,6 @@ def get_topics_groups(limit, profile_url):
     selenium.load_page(profile_url + 'groups')
     try:
         selenium.get_elements_class_name('fbTimelineCapsule')
-        print(selenium.get_element_class_name('fbTimelineCapsule').text)
         return data
     except Exception:
         pass
@@ -85,7 +84,6 @@ def get_topics_pages(limit, profile_url):
     selenium.load_page(profile_url + 'likes')
     try:
         selenium.get_element_class_name('fbTimelineCapsule')
-        print(selenium.get_element_class_name('fbTimelineCapsule').text)
         return data
     except Exception:
         pass
