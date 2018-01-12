@@ -4,7 +4,7 @@ import time
 driver = None
 
 
-def init(server=True):
+def init(server=False):
     global driver
     prefs = {"profile.default_content_setting_values.notifications": 2}
     chrome_options = webdriver.ChromeOptions()

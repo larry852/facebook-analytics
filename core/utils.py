@@ -44,17 +44,22 @@ def get_data_search_profiles(searchurl, limit=None):
 def get_data_topics_profile(profile, limit=None):
     selenium.init()
     selenium.load_page('https://www.facebook.com/{}'.format(profile.fb_id))
-    current_url = selenium.get_current_url()
-    groups = get_topics_groups(limit, current_url)
-    pages = get_topics_pages(limit, current_url)
+    profile_url = selenium.get_current_url()
+    profile_url += '/' if 'profile.php?' not in profile_url else '&sk='
+    groups = get_topics_groups(limit, profile_url)
+    pages = get_topics_pages(limit, profile_url)
     return groups + pages
 
 
-def get_topics_groups(limit, current_url):
+def get_topics_groups(limit, profile_url):
     data = []
-    selenium.load_page(current_url + '/groups')
-    if current_url == selenium.get_current_url():
+    selenium.load_page(profile_url + 'groups')
+    try:
+        selenium.get_elements_class_name('fbTimelineCapsule')
+        print(selenium.get_element_class_name('fbTimelineCapsule').text)
         return data
+    except Exception:
+        pass
     selenium.scrolling_down_facebook(limit, '_153f')
     groups = []
     possible_groups = selenium.get_elements_class_name('mbs')
@@ -75,11 +80,15 @@ def get_topics_groups(limit, current_url):
     return data
 
 
-def get_topics_pages(limit, current_url):
+def get_topics_pages(limit, profile_url):
     data = []
-    selenium.load_page(current_url + '/likes')
-    if current_url == selenium.get_current_url():
+    selenium.load_page(profile_url + 'likes')
+    try:
+        selenium.get_element_class_name('fbTimelineCapsule')
+        print(selenium.get_element_class_name('fbTimelineCapsule').text)
         return data
+    except Exception:
+        pass
     selenium.scrolling_down_facebook(limit, '_5rz')
     pages = []
     possible_pages = selenium.get_elements_class_name('fsl')
