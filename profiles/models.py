@@ -7,7 +7,7 @@ class Query(models.Model):
 
 
 class Profile(models.Model):
-    fb_id = models.IntegerField()
+    fb_id = models.CharField(max_length=1000)
     name = models.CharField(max_length=100)
     image = models.CharField(max_length=500)
     query = models.ForeignKey(Query, on_delete=models.CASCADE)

@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 
 class Entity(models.Model):
-    fb_id = models.IntegerField()
+    fb_id = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
     image = models.CharField(max_length=500)
     types_entitys = (
