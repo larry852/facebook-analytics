@@ -26,7 +26,7 @@ SECRET_KEY = 'm_z7*5dwg(9e*dl!%%uuz4*o637x(cxd))^wtx)kgneose3gt='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['toolia-backend.herokuapp.com']
 
 
 # Application definition
