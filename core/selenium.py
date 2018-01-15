@@ -10,13 +10,14 @@ def init(server=False):
     prefs = {"profile.default_content_setting_values.notifications": 2}
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option("prefs", prefs)
-    # Heroku
+    # --------- Heroku ---------
     chrome_bin = os.environ.get('GOOGLE_CHROME_BIN', None)
     if chrome_bin:
         chrome_options.binary_location = chrome_bin
         chrome_options.add_argument('--disable-gpu')
         chrome_options.add_argument('--no-sandbox')
         server = False
+    # --------- Heroku ---------
     if server:
         driver = webdriver.Remote(
             command_executor='http://127.0.0.1:4444/wd/hub',
