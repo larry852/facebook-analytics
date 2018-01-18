@@ -17,7 +17,6 @@ def main(data):
     stories = []
     for data_storie in data_stories:
         data_api = get_data_storie_api(data_storie['fb_id'])
-        print(data_api)
         if data_api:
             stories.append(data_api)
 
@@ -106,7 +105,6 @@ def get_data_storie_api(fb_id):
     base = 'https://graph.facebook.com/v2.11'
     fields = "id,created_time,description,from,message,name,picture,shares"
     url = "{}/{}/?&access_token={}&fields={}".format(base, fb_id, access_token, fields)
-    print(url)
     try:
         resp = urlopen(url).read().decode(encoding='utf-8', errors='ignore')
     except Exception:
