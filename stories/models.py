@@ -9,13 +9,13 @@ class Query(models.Model):
 class Entity(models.Model):
     fb_id = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    image = models.CharField(max_length=1000, default=None)
+    image = models.CharField(max_length=1000, default=None, null=True)
 
 
 class Attachment(models.Model):
-    title = models.CharField(max_length=500)
-    description = models.CharField(max_length=5000, default=None)
-    message = models.CharField(max_length=5000, default=None)
+    title = models.CharField(max_length=500, default=None, null=True)
+    description = models.CharField(max_length=5000, default=None, null=True)
+    message = models.CharField(max_length=5000, default=None, null=True)
     media = models.CharField(max_length=1000)
 
 
@@ -25,14 +25,14 @@ class Storie(models.Model):
     attachment = models.ForeignKey(Attachment, on_delete=models.CASCADE)
     date = models.DateTimeField()
     query = models.ForeignKey(Query, on_delete=models.CASCADE)
-    shareds = models.IntegerField(default=0)
+    shares = models.IntegerField(default=0)
 
 
 class Comment(models.Model):
     fb_id = models.CharField(max_length=1000)
     message = models.CharField(max_length=5000)
     date = models.DateTimeField()
-    image = models.CharField(max_length=1000, default=None)
+    image = models.CharField(max_length=1000, default=None, null=True)
     storie = models.ForeignKey(Storie, on_delete=models.CASCADE)
 
 
