@@ -8,4 +8,6 @@ def index(request):
 
 def query(request):
     context = {}
+    data = request.POST
+    print(utils.main(data))
     return render(request, 'stories/result.html', context)
