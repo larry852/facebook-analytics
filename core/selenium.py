@@ -5,7 +5,7 @@ import os
 driver = None
 
 
-def init(server=False):
+def init(server=True):
     global driver
     prefs = {"profile.default_content_setting_values.notifications": 2}
     chrome_options = webdriver.ChromeOptions()
