@@ -8,6 +8,7 @@ def index(request):
 
 def query(request):
     context = {}
-    data = request.POST
-    print(utils.main(data))
+    if request.POST['query']:
+        data = request.POST
+        context = utils.main(data)
     return render(request, 'stories/result.html', context)

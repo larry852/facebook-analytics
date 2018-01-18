@@ -17,10 +17,9 @@
 	<br><br>
 
 	{% for storie in stories %}
-    	<a href="{{storie.url}}" target="_blank">
-    		<img src="{{storie.image}}" width="72" height="72" alt="{{storie.name}}" title="{{storie.name}}">
-    		{# <span>{{storie.name}}</span> #}
-    	</a>
+    	<li><a href="{{storie.url}}" target="_blank">
+    		<span>{{storie.url}}</span>
+    	</a></li>
 	{% endfor %}
 </form>
 </body>

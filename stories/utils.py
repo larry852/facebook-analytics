@@ -8,13 +8,13 @@ def main(data):
     searchquery = get_searchquery(data)
     searchurl = 'https://www.facebook.com/search/{}'.format(searchquery)
     core_utils.login_facebook()
-    # limit = int(data['limit']) if data['limit'] else None
-    # profiles = core_utils.get_data_search_profiles(searchurl, limit)
+    limit = int(data['limit']) if data['limit'] else None
+    stories = core_utils.get_data_search_stories(searchurl, limit)
     # list_querys = get_querys(data)
     # query = save_query(list_querys)
     # save_profiles(profiles, query)
     core_utils.close_bot()
-    context = {'searchurl': searchurl, 'stories': 'stories'}
+    context = {'searchurl': searchurl, 'stories': stories}
 
     print("Get stories --- {} seconds ---".format(time.time() - start_time))
 

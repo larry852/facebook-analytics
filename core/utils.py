@@ -108,5 +108,29 @@ def get_topics_pages(limit, profile_url):
     return data
 
 
+def get_data_search_stories(searchurl, limit=None):
+    data = []
+    selenium.init()
+    selenium.load_page(searchurl)
+    try:
+        selenium.get_element_id('empty_result_error')
+        print('No results --- {} ---'.format(searchurl))
+        return data
+    except Exception:
+        pass
+    selenium.scrolling_down_facebook(limit, '_5bl2')
+    stories = selenium.get_elements_class_name('_5bl2')
+    for storie in stories:
+        page_id = json.loads(storie.get_attribute('data-bt'))['owner_id']
+        storie_id = json.loads(storie.get_attribute('data-bt'))['id']
+        fb_id = str(page_id) + "_" + str(storie_id)
+        element = {
+            'fb_id': fb_id,
+            'url': 'https://www.facebook.com/' + str(fb_id)
+        }
+        data.append(element)
+    return data
+
+
 def close_bot():
     selenium.close()
