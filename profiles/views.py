@@ -6,7 +6,7 @@ from . import utils
 def index(request):
     form = QueryForm()
     context = {'form': form}
-    return render(request, 'index.html', context)
+    return render(request, 'profiles/index.html', context)
 
 
 def query(request):
@@ -16,4 +16,4 @@ def query(request):
     if form.is_valid():
         data = form.cleaned_data
         context = utils.main(data)
-    return render(request, 'result.html', context)
+    return render(request, 'profiles/result.html', context)

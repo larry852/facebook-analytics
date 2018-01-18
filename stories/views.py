@@ -1,3 +1,11 @@
 from django.shortcuts import render
+from . import utils
 
-# Create your views here.
+
+def index(request):
+    return render(request, 'stories/index.html')
+
+
+def query(request):
+    context = {}
+    return render(request, 'stories/result.html', context)

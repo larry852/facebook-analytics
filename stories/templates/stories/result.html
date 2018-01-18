@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stories</title>
+</head>
+<body>
+	<a href="{% url 'stories:index' %}">Search Again</a> - 
+	<a class="nav-link" target="_blank" href="{% url 'admin:stories_storie_changelist' %}">Admin</a>
+	<br>
+	<h1>Stories</h1>
+	<a href="{{searchurl}}" target="_blank">{{searchurl}}</a>
+	
+	<br><br>
+
+	{{ stories|length }} Stories
+
+	<br><br>
+
+	{% for storie in stories %}
+    	<a href="{{storie.url}}" target="_blank">
+    		<img src="{{storie.image}}" width="72" height="72" alt="{{storie.name}}" title="{{storie.name}}">
+    		{# <span>{{storie.name}}</span> #}
+    	</a>
+	{% endfor %}
+</form>
+</body>
+</html>

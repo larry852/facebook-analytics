@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Stories</title>
+</head>
+<body>
+	<a href="{% url 'stories:index' %}">Search Again</a> - 
+	<a class="nav-link" target="_blank" href="{% url 'admin:stories_storie_changelist' %}">Admin</a>
+	<br>
+	<h1>Stories</h1>
+	<form action={% url 'stories:query' %} method="post">
+    	{% csrf_token %}
+    	<label for="query">Query: </label>
+    	<input id="query" type="text" name="query">
+        <br><br>
+    	<label for="location">location: </label>
+    	<input id="location" type="text" name="location">
+        <br><br>
+    	<label for="start_year">start_year: </label>
+    	<input id="start_year" type="text" name="start_year">
+        <br><br>
+    	<label for="start_month">start_month: </label>
+    	<input id="start_month" type="text" name="start_month">
+        <br><br>
+    	<label for="end_year">end_year: </label>
+    	<input id="end_year" type="text" name="end_year">
+        <br><br>
+    	<label for="end_month">end_month: </label>
+    	<input id="end_month" type="text" name="end_month">
+        <br><br>
+    	<input type="submit" value="Find" />
+	</form>
+</body>
+</html>

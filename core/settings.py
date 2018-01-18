@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'profiles.apps.ProfilesConfig',
     'topics.apps.TopicsConfig',
+    'stories.apps.StoriesConfig',
 ]
 
 MIDDLEWARE = [
