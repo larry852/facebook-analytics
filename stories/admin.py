@@ -4,4 +4,4 @@ from .models import Storie
 
 @admin.register(Storie)
 class AdminStorie(admin.ModelAdmin):
-    list_display = ('fb_id', 'likes')
+    list_display = ('fb_id', 'attachment')
