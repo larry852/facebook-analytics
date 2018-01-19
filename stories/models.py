@@ -21,7 +21,7 @@ class Attachment(models.Model):
 
 class Storie(models.Model):
     fb_id = models.CharField(max_length=1000)
-    entity = models.ForeignKey(Entity, on_delete=models.CASCADE)
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, null=True)
     attachment = models.ForeignKey(Attachment, on_delete=models.CASCADE)
     date = models.DateTimeField()
     query = models.ForeignKey(Query, on_delete=models.CASCADE)

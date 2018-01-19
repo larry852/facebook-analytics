@@ -3,6 +3,7 @@ import time
 import json
 from urllib.request import urlopen
 from .models import Query, Entity, Attachment, Storie, Comment, Reaction
+import datetime
 
 
 def main(data):
@@ -58,43 +59,60 @@ def save_query(url):
 def save_stories(stories, query):
     for storie in stories:
         try:
-            entity, created = Entity.objects.get_or_create(fb_id=storie['from']['id'], name=storie['from']['name'])
-            entity.save()
+            try:
+                entity, created = Entity.objects.get_or_create(fb_id=storie['from']['id'], name=storie['from']['name'])
+                entity.save()
+            except Exception:
+                entity = None
 
             try:
-                description = storie['description']
+                storie['description']
             except Exception:
-                description = None
+                storie['description'] = None
             try:
-                message = storie['message']
+                storie['message']
             except Exception:
-                message = None
+                storie['message'] = None
             try:
-                name = storie['name']
+                storie['name']
             except Exception:
-                name = None
+                storie['name'] = None
             try:
                 storie['picture']
             except Exception:
                 storie['picture'] = '/media/topics/group_facebook_default.png'
 
-            attachment, created = Attachment.objects.get_or_create(title=name, description=description, message=message, media=storie['picture'])
+            attachment, created = Attachment.objects.get_or_create(title=storie['name'], description=storie['description'], message=storie['message'], media=storie['picture'])
             attachment.save()
 
             try:
-                pass
-            except Exception as e:
-                raise e
+                storie['shares']['count']
+            except Exception:
+                storie['shares'] = {'count': 0}
+
+            try:
+                storie['created_time']
+            except Exception:
+                storie['created_time'] = datetime.datetime.now()
+
             storieDB, created = Storie.objects.get_or_create(fb_id=storie['id'], entity=entity, attachment=attachment, date=storie['created_time'], query=query, shares=storie['shares']['count'])
             entity.save()
 
-            for comment in storie['comments']:
-                Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB)
+            try:
+                for comment in storie['comments']:
+                    Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB)
+            except Exception:
+                pass
 
-            for reaction in storie['reactions']:
-                Reaction.objects.get_or_create(type=reaction['type'], count=reaction['count'], storie=storieDB)
+            try:
+                for reaction in storie['reactions']:
+                    Reaction.objects.get_or_create(type=reaction['type'], count=reaction['count'], storie=storieDB)
+            except Exception:
+                pass
         except Exception:
-            pass
+            print("--- Error Data Storie ---  ")
+            print(storie)
+            print("")
 
 
 def get_data_storie_api(fb_id):
@@ -109,7 +127,6 @@ def get_data_storie_api(fb_id):
         resp = urlopen(url).read().decode(encoding='utf-8', errors='ignore')
     except Exception:
         print("--- Error Graph API ---  ")
-        print("--- URL ---  ")
         print(url)
         print("")
         return data
