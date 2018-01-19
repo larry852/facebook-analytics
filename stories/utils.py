@@ -108,6 +108,10 @@ def get_data_storie_api(fb_id):
     try:
         resp = urlopen(url).read().decode(encoding='utf-8', errors='ignore')
     except Exception:
+        print("--- Error Graph API ---  ")
+        print("--- URL ---  ")
+        print(url)
+        print("")
         return data
     data = json.loads(resp)
     type_reactions = {'NONE', 'LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY', 'THANKFUL'}
