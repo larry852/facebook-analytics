@@ -3,7 +3,7 @@ import time
 import json
 from urllib.request import urlopen
 from .models import Query, Entity, Attachment, Storie, Comment, Reaction
-import datetime
+from django.utils import timezone
 
 
 def main(data):
@@ -78,7 +78,8 @@ def save_stories(stories, query):
             except Exception:
                 storie['name'] = None
             try:
-                storie['picture']
+                if storie['picture'] is None:
+                    storie['picture'] = '/media/topics/group_facebook_default.png'
             except Exception:
                 storie['picture'] = '/media/topics/group_facebook_default.png'
 
@@ -93,7 +94,7 @@ def save_stories(stories, query):
             try:
                 storie['created_time']
             except Exception:
-                storie['created_time'] = datetime.datetime.now()
+                storie['created_time'] = timezone.now()
 
             storieDB, created = Storie.objects.get_or_create(fb_id=storie['id'], entity=entity, attachment=attachment, date=storie['created_time'], query=query, shares=storie['shares']['count'])
             entity.save()
@@ -126,9 +127,13 @@ def get_data_storie_api(fb_id):
     try:
         resp = urlopen(url).read().decode(encoding='utf-8', errors='ignore')
     except Exception:
-        print("--- Error Graph API ---  ")
+        print("--- No data Graph API ---  ")
+        print("--- Getting data of Selenium ---  ")
         print(url)
         print("")
+        core_utils.login_facebook()
+        data = core_utils.get_data_storie_scrap(fb_id)
+        core_utils.close_bot()
         return data
     data = json.loads(resp)
     type_reactions = {'NONE', 'LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY', 'THANKFUL'}

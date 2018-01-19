@@ -132,5 +132,32 @@ def get_data_search_stories(searchurl, limit=None):
     return data
 
 
+def get_data_storie_scrap(fb_id):
+    selenium.init()
+    selenium.load_page('https://www.facebook.com/' + fb_id)
+    entity = selenium.get_element_class_name('_5pb8')
+    entity_str = entity.get_attribute('data-hovercard')
+    entity_id = entity_str[entity_str.index('?id='):].replace('?id=', '')
+    entity_name = selenium.get_child_tag_name(entity, 'img').get_attribute('aria-label')
+    message = selenium.get_element_class_name('userContent').text
+    try:
+        image = selenium.get_element_class_name('fbStoryAttachmentImage')
+        image_url = selenium.get_child_tag_name(image, 'img').get_attribute('src')
+    except Exception:
+        try:
+            image = selenium.get_element_class_name('_3x-2')
+            image_url = selenium.get_child_tag_name(image, 'img').get_attribute('src')
+        except Exception:
+            image_url = None
+
+    data = {
+        'id': fb_id,
+        'from': {'id': entity_id, 'name': entity_name},
+        'message': message,
+        'picture': image_url,
+    }
+    return data
+
+
 def close_bot():
     selenium.close()
