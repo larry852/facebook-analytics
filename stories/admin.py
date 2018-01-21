@@ -13,7 +13,7 @@ class AdminStorie(admin.ModelAdmin):
         return False
 
     def image_html(self, obj):
-        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" height=130 width=100/> </a>'.format(obj.fb_id, obj.attachment.media))
+        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" height=100 width=130/> </a>'.format(obj.fb_id, obj.attachment.media))
 
     image_html.short_description = 'post'
 
