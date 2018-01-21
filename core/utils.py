@@ -140,6 +140,14 @@ def get_data_storie_scrap(fb_id):
     entity_id = entity_str[entity_str.index('?id='):].replace('?id=', '')
     entity_name = selenium.get_child_tag_name(entity, 'img').get_attribute('aria-label')
     message = selenium.get_element_class_name('userContent').text
+    open_reactions = selenium.get_element_class_name('_3t53')
+    selenium.click(open_reactions)
+    div_reactions = selenium.get_element_class_name('_ds-')
+    span_reactions = selenium.get_child_tag_name(div_reactions, 'span')
+    reactions = selenium.get_childs_tag_name(span_reactions, 'span')
+    for reaction in reactions:
+        print(reaction.get_attribute('aria-label'))
+
     try:
         image = selenium.get_element_class_name('fbStoryAttachmentImage')
         image_url = selenium.get_child_tag_name(image, 'img').get_attribute('src')

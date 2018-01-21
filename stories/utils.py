@@ -14,12 +14,12 @@ def main(data):
     core_utils.login_facebook()
     limit = int(data['limit']) if data['limit'] else None
     data_stories = core_utils.get_data_search_stories(searchurl, limit)
-    core_utils.close_bot()
     stories = []
     for data_storie in data_stories:
         data_api = get_data_storie_api(data_storie['fb_id'])
         if data_api:
             stories.append(data_api)
+    core_utils.close_bot()
 
     list_querys = get_querys(data)
     query = save_query(list_querys)
@@ -131,9 +131,7 @@ def get_data_storie_api(fb_id):
         print("--- Getting data of Selenium ---  ")
         print(url)
         print("")
-        core_utils.login_facebook()
         data = core_utils.get_data_storie_scrap(fb_id)
-        core_utils.close_bot()
         return data
     data = json.loads(resp)
     type_reactions = {'NONE', 'LIKE', 'LOVE', 'WOW', 'HAHA', 'SAD', 'ANGRY', 'THANKFUL'}
