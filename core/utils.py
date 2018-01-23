@@ -140,14 +140,19 @@ def get_data_storie_scrap(fb_id):
     entity_id = entity_str[entity_str.index('?id='):].replace('?id=', '')
     entity_name = selenium.get_child_tag_name(entity, 'img').get_attribute('aria-label')
     message = selenium.get_element_class_name('userContent').text
-    open_reactions = selenium.get_element_class_name('_3t53')
-    selenium.click(open_reactions)
-    div_reactions = selenium.get_element_class_name('_ds-')
-    span_reactions = selenium.get_child_tag_name(div_reactions, 'span')
-    reactions = selenium.get_childs_tag_name(span_reactions, 'span')
-    reaction_str = reactions[0].get_attribute('aria-label')
-    reaction_none = [int(s) for s in reaction_str.split() if s.isdigit()][0]
-    print("Total reactions:" + str(reaction_none))
+    try:
+        open_reactions = selenium.get_element_class_name('_3t53')
+        selenium.click(open_reactions)
+        div_reactions = selenium.get_element_class_name('_ds-')
+        span_reactions = selenium.get_child_tag_name(div_reactions, 'span')
+        reactions = selenium.get_childs_tag_name(span_reactions, 'span')
+        reaction_str = reactions[0].get_attribute('aria-label')
+        reaction_none = [int(s) for s in reaction_str.split() if s.isdigit()][0]
+        print("Total reactions: " + str(reaction_none))
+        print("")
+    except Exception:
+        print("No reactions")
+        print("")
 
     try:
         image = selenium.get_element_class_name('fbStoryAttachmentImage')

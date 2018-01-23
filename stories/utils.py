@@ -126,6 +126,9 @@ def get_data_storie_api(fb_id):
     url = "{}/{}/?&access_token={}&fields={}".format(base, fb_id, access_token, fields)
     try:
         resp = urlopen(url).read().decode(encoding='utf-8', errors='ignore')
+        print("--- Data Graph API ---  ")
+        print("--- Getting data of API ---  ")
+        print("")
     except Exception:
         print("--- No data Graph API ---  ")
         print("--- Getting data of Selenium ---  ")
