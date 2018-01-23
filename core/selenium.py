@@ -69,7 +69,7 @@ def save_screenshoot(filePath='/tmp/capture.png'):
 
 def scroll_down():
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(5)
+    time.sleep(10)
 
 
 def scrolling_down_facebook(limit, main_element):
@@ -90,7 +90,7 @@ def scrolling_down_facebook(limit, main_element):
 
 def click(element):
     element.click()
-    time.sleep(5)
+    time.sleep(10)
 
 
 def close():
