@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Storie)
 class AdminStorie(admin.ModelAdmin):
-    list_display = ('image_html', 'url_html_entity', 'description', 'message', 'reaction_total', 'reaction_like', 'reaction_love', 'reaction_wow', 'reaction_haha', 'reaction_sad', 'reaction_angry', 'reaction_thankful', 'shares', 'date', 'get_query_html')
+    list_display = ('image_html', 'message', 'reaction_total', 'reaction_like', 'reaction_love', 'reaction_wow', 'reaction_haha', 'reaction_sad', 'reaction_angry', 'reaction_thankful', 'shares')
     actions = ['delete']
     list_display_links = None
 
@@ -13,7 +13,7 @@ class AdminStorie(admin.ModelAdmin):
         return False
 
     def image_html(self, obj):
-        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" height=100 width=130/> </a>'.format(obj.fb_id, obj.attachment.media))
+        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" height=100 width=130/> </a> By: <a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.fb_id, obj.attachment.media, obj.entity.fb_id, obj.entity.name))
 
     image_html.short_description = 'post'
 
