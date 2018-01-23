@@ -9,18 +9,21 @@ from django.utils import timezone
 def main(data):
     start_time = time.time()
 
+    stories = []
     searchquery = get_searchquery(data)
     searchurl = 'https://www.facebook.com/search/{}'.format(searchquery)
     core_utils.login_facebook()
     limit = int(data['limit']) if data['limit'] else None
     data_stories = core_utils.get_data_search_stories(searchurl, limit)
-    stories = []
-    for data_storie in data_stories:
+    total_count_post = len(data_stories)
+    print("Total post: " + str(total_count_post))
+    print("")
+    for index, data_storie in enumerate(data_stories):
+        print("Process: " + str(index) + "/" + str(total_count_post))
         data_api = get_data_storie_api(data_storie['fb_id'])
         if data_api:
             stories.append(data_api)
     core_utils.close_bot()
-
     list_querys = get_querys(data)
     query = save_query(list_querys)
     save_stories(stories, query)
@@ -61,9 +64,8 @@ def save_stories(stories, query):
         try:
             try:
                 entity, created = Entity.objects.get_or_create(fb_id=storie['from']['id'], name=storie['from']['name'])
-                entity.save()
             except Exception:
-                entity = None
+                entity, created = Entity.objects.get_or_create(fb_id=storie['id'], name="Group of Facebook")
 
             try:
                 storie['description']
@@ -84,7 +86,6 @@ def save_stories(stories, query):
                 storie['picture'] = '/media/topics/group_facebook_default.png'
 
             attachment, created = Attachment.objects.get_or_create(title=storie['name'], description=storie['description'], message=storie['message'], media=storie['picture'])
-            attachment.save()
 
             try:
                 storie['shares']['count']
@@ -97,7 +98,6 @@ def save_stories(stories, query):
                 storie['created_time'] = timezone.now()
 
             storieDB, created = Storie.objects.get_or_create(fb_id=storie['id'], entity=entity, attachment=attachment, date=storie['created_time'], query=query, shares=storie['shares']['count'])
-            entity.save()
 
             try:
                 for comment in storie['comments']:
@@ -109,7 +109,7 @@ def save_stories(stories, query):
                 for reaction in storie['reactions']:
                     Reaction.objects.get_or_create(type=reaction['type'], count=reaction['count'], storie=storieDB)
             except Exception:
-                pass
+                Reaction.objects.get_or_create(type='NONE', count=0, storie=storieDB)
         except Exception:
             print("--- Error Data Storie ---  ")
             print(storie)
@@ -126,13 +126,10 @@ def get_data_storie_api(fb_id):
     url = "{}/{}/?&access_token={}&fields={}".format(base, fb_id, access_token, fields)
     try:
         resp = urlopen(url).read().decode(encoding='utf-8', errors='ignore')
-        print("--- Data Graph API ---  ")
         print("--- Getting data of API ---  ")
         print("")
     except Exception:
-        print("--- No data Graph API ---  ")
         print("--- Getting data of Selenium ---  ")
-        print(url)
         print("")
         data = core_utils.get_data_storie_scrap(fb_id)
         return data

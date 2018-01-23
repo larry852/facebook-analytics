@@ -148,10 +148,9 @@ def get_data_storie_scrap(fb_id):
         reactions = selenium.get_childs_tag_name(span_reactions, 'span')
         reaction_str = reactions[0].get_attribute('aria-label')
         reaction_none = [int(s) for s in reaction_str.split() if s.isdigit()][0]
-        print("Total reactions: " + str(reaction_none))
-        print("")
     except Exception:
-        print("No reactions")
+        reaction_none = 0
+        print("Total reactions: " + str(reaction_none))
         print("")
 
     try:
@@ -169,7 +168,7 @@ def get_data_storie_scrap(fb_id):
         'from': {'id': entity_id, 'name': entity_name},
         'message': message,
         'picture': image_url,
-        'reactions': {'type': 'NONE', 'count': reaction_none}
+        'reactions': [{'type': 'NONE', 'count': reaction_none}]
     }
     return data
 

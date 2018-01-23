@@ -5,17 +5,19 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Storie)
 class AdminStorie(admin.ModelAdmin):
-    list_display = ('image_html', 'message', 'reaction_total', 'reaction_like', 'reaction_love', 'reaction_wow', 'reaction_haha', 'reaction_sad', 'reaction_angry', 'reaction_thankful', 'shares')
+    list_display = ('post', 'message', 'shares', 'reaction_total', 'reaction_like', 'reaction_love', 'reaction_wow', 'reaction_haha', 'reaction_sad', 'reaction_angry', 'reaction_thankful')
     actions = ['delete']
     list_display_links = None
+    ordering = ('-reaction__count', '-shares')
 
     def has_add_permission(self, request):
         return False
 
-    def image_html(self, obj):
+    def post(self, obj):
         return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" height=100 width=130/> </a> By: <a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.fb_id, obj.attachment.media, obj.entity.fb_id, obj.entity.name))
 
-    image_html.short_description = 'post'
+    post.short_description = 'post'
+    post.admin_order_field = 'id'
 
     def url_html_entity(self, obj):
         return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.entity.fb_id, obj.entity.name))
@@ -35,45 +37,31 @@ class AdminStorie(admin.ModelAdmin):
     message.short_message = 'message'
     message.admin_order_field = 'attachment'
 
-    def reaction_haha(self, obj):
-        return Reaction.objects.get(storie=obj, type='HAHA').count
-
-    reaction_haha.admin_order_field = 'reaction'
-
     def reaction_total(self, obj):
         return Reaction.objects.get(storie=obj, type='NONE').count
 
-    reaction_total.admin_order_field = 'reaction'
+    reaction_total.admin_order_field = 'reaction__count'
+
+    def reaction_haha(self, obj):
+        return Reaction.objects.get(storie=obj, type='HAHA').count
 
     def reaction_like(self, obj):
         return Reaction.objects.get(storie=obj, type='LIKE').count
 
-    reaction_like.admin_order_field = 'reaction'
-
     def reaction_love(self, obj):
         return Reaction.objects.get(storie=obj, type='LOVE').count
-
-    reaction_love.admin_order_field = 'reaction'
 
     def reaction_wow(self, obj):
         return Reaction.objects.get(storie=obj, type='WOW').count
 
-    reaction_wow.admin_order_field = 'reaction'
-
     def reaction_sad(self, obj):
         return Reaction.objects.get(storie=obj, type='SAD').count
-
-    reaction_sad.admin_order_field = 'reaction'
 
     def reaction_angry(self, obj):
         return Reaction.objects.get(storie=obj, type='ANGRY').count
 
-    reaction_angry.admin_order_field = 'reaction'
-
     def reaction_thankful(self, obj):
         return Reaction.objects.get(storie=obj, type='THANKFUL').count
-
-    reaction_thankful.admin_order_field = 'reaction'
 
     def get_query_html(self, obj):
         querys = obj.query.url.split('/')
