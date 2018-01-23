@@ -145,8 +145,9 @@ def get_data_storie_scrap(fb_id):
     div_reactions = selenium.get_element_class_name('_ds-')
     span_reactions = selenium.get_child_tag_name(div_reactions, 'span')
     reactions = selenium.get_childs_tag_name(span_reactions, 'span')
-    for reaction in reactions:
-        print(reaction.get_attribute('aria-label'))
+    reaction_str = reactions[0].get_attribute('aria-label')
+    reaction_none = [int(s) for s in reaction_str.split() if s.isdigit()][0]
+    print("Total reactions:" + str(reaction_none))
 
     try:
         image = selenium.get_element_class_name('fbStoryAttachmentImage')
@@ -163,6 +164,7 @@ def get_data_storie_scrap(fb_id):
         'from': {'id': entity_id, 'name': entity_name},
         'message': message,
         'picture': image_url,
+        'reactions': {'type': 'NONE', 'count': reaction_none}
     }
     return data
 
