@@ -3,6 +3,7 @@ import time
 import os
 
 driver = None
+wait_time = 5
 
 
 def init(server=False):
@@ -69,7 +70,7 @@ def save_screenshoot(filePath='/tmp/capture.png'):
 
 def scroll_down():
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    time.sleep(10)
+    time.sleep(wait_time)
 
 
 def scrolling_down_facebook(limit, main_element):
@@ -90,7 +91,7 @@ def scrolling_down_facebook(limit, main_element):
 
 def click(element):
     element.click()
-    time.sleep(10)
+    time.sleep(wait_time)
 
 
 def close():
