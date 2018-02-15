@@ -23,7 +23,7 @@ class AdminStorie(admin.ModelAdmin):
         return obj.attachment.message
 
     message.short_message = 'message'
-    message.admin_order_field = 'attachment'
+    message.admin_order_field = 'attachment__message'
 
 
 @admin.register(Comment)
@@ -42,7 +42,7 @@ class AdminComment(admin.ModelAdmin):
     url_html.admin_order_field = 'storie'
 
     def image_html_storie(self, obj):
-        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" /> </a>'.format(obj.storie.fb_id, obj.storie.attachment.media))
+        return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image height=100 width=130 src="{}" /> </a>'.format(obj.storie.fb_id, obj.storie.attachment.media))
 
     image_html_storie.short_description = 'post'
     image_html_storie.admin_order_field = 'storie'
