@@ -86,4 +86,5 @@ def save_query(url):
 
 def save_profiles(profiles, query):
     for profile in profiles:
-        Profile.objects.get_or_create(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'], query=query)
+        if not Profile.objects.filter(fb_id=profile['fb_id']).exists():
+            Profile.objects.get_or_create(fb_id=profile['fb_id'], name=profile['name'], image=profile['image'], query=query)

@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Storie)
 class AdminStorie(admin.ModelAdmin):
-    list_display = ('post', 'message', 'shares', 'reaction_total', 'reaction_like', 'reaction_love', 'reaction_wow', 'reaction_haha', 'reaction_sad', 'reaction_angry', 'reaction_thankful')
+    list_display = ('post', 'message', 'shares', 'reaction_total')
     actions = ['delete']
     list_display_links = None
     ordering = ('-reaction__count', '-shares')
