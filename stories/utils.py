@@ -107,7 +107,6 @@ def save_stories(stories, query):
 
                 try:
                     for comment in storie['comments']:
-                        print(comment)
                         comment['sentiment'] = get_sentiment(comment['message'])
                         Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB, sentiment=comment['sentiment'])
                 except Exception:
