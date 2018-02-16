@@ -37,7 +37,7 @@ class AdminStorie(admin.ModelAdmin):
             for comment in comments:
                 score += comment.sentiment
             score = score / len(comments)
-            score = round(obj.sentiment, 2)
+            score = round(score, 2)
             if -1 <= score <= -0.25:
                 return mark_safe('<span style="background-color: #e53935;color: #fff;">{} / {}</span>'.format('Negative', score, obj.id))
             elif 0.25 <= score <= 1:
