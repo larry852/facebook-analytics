@@ -16,7 +16,7 @@ def main(data):
     limit = int(data['limit']) if data['limit'] else None
     data_stories = core_utils.get_data_search_stories(searchurl, limit)
 
-    data_stories = [data_stories[1]]
+    # data_stories = [data_stories[1]]
 
     total_count_post = len(data_stories)
     print("Total post: " + str(total_count_post))
