@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Storie)
 class AdminStorie(admin.ModelAdmin):
-    list_display = ('post', 'message', 'range_sentiment_post', 'range_sentiment_comment')
+    list_display = ('post', 'message', 'range_sentiment_post', 'range_sentiment_comment', 'count_sentiment_comment')
     actions = ['delete']
     list_display_links = None
     ordering = ('-sentiment',)
@@ -16,14 +16,8 @@ class AdminStorie(admin.ModelAdmin):
     def post(self, obj):
         return mark_safe('<a target="_blank" href="https://www.facebook.com/{}"> <image src="{}" height=100 width=130/> </a> By: <a target="_blank" href="https://www.facebook.com/{}"> {} </a>'.format(obj.fb_id, obj.attachment.media, obj.entity.fb_id, obj.entity.name))
 
-    post.short_description = 'post'
-    post.admin_order_field = 'id'
-
     def message(self, obj):
         return obj.attachment.message
-
-    message.short_message = 'message'
-    message.admin_order_field = 'attachment__message'
 
     def range_sentiment_post(self, obj):
         score = round(obj.sentiment, 2)
@@ -34,7 +28,6 @@ class AdminStorie(admin.ModelAdmin):
         else:
             return mark_safe('<span style="background-color: #ffe57f;">{} / {}</span>'.format('Neutral', score))
 
-    range_sentiment_post.short_message = 'range sentiment post'
     range_sentiment_post.admin_order_field = 'sentiment'
 
     def range_sentiment_comment(self, obj):
@@ -53,7 +46,22 @@ class AdminStorie(admin.ModelAdmin):
                 return mark_safe('<span style="background-color: #ffe57f;">{} / {}</span><br><br><a target="_blank" href="/admin/stories/comment/?storie__id__exact={}">List comments</a>'.format('Neutral', score, obj.id))
         return "No comments"
 
-    range_sentiment_comment.short_message = 'range sentiment comments'
+    def count_sentiment_comment(self, obj):
+        positive = 0
+        neutral = 0
+        negative = 0
+        comments = Comment.objects.filter(storie=obj)
+        if comments:
+            for comment in comments:
+                score = round(comment.sentiment, 2)
+                if -1 <= score <= -0.25:
+                    negative += 1
+                elif 0.25 <= score <= 1:
+                    positive += 1
+                else:
+                    neutral += 1
+            return mark_safe('Positive: {}/{total} <br> Neutral: {}/{total} <br> Negative: {}/{total} <br><br><a target="_blank" href="/admin/stories/comment/?storie__id__exact={}">List comments</a>'.format(positive, neutral, negative, obj.id, total=len(comments)))
+        return "No comments"
 
 
 @admin.register(Comment)
