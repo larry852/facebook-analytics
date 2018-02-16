@@ -91,7 +91,7 @@ def scrolling_down_facebook(limit, main_element):
 
 def click(element):
     element.click()
-    time.sleep(wait_time)
+    time.sleep(wait_time + 5)
 
 
 def close():

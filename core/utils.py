@@ -1,5 +1,6 @@
 from core import selenium
 import json
+from django.utils import timezone
 
 
 def login_facebook(username='anjare97@hotmail.com', password='08jun1997ggg'):
@@ -140,6 +141,14 @@ def get_data_storie_scrap(fb_id):
     entity_id = entity_str[entity_str.index('?id='):].replace('?id=', '')
     entity_name = selenium.get_child_tag_name(entity, 'img').get_attribute('aria-label')
     message = selenium.get_element_class_name('userContent').text
+    comments = []
+    try:
+        html_comments = selenium.get_elements_class_name('UFICommentBody')
+        for comment in html_comments:
+            comments.append({'fb_id': fb_id, 'message': comment.text, 'date': timezone.now()})
+    except Exception:
+        pass
+
     try:
         open_reactions = selenium.get_element_class_name('_3t53')
         selenium.click(open_reactions)
@@ -168,7 +177,8 @@ def get_data_storie_scrap(fb_id):
         'from': {'id': entity_id, 'name': entity_name},
         'message': message,
         'picture': image_url,
-        'reactions': [{'type': 'NONE', 'count': reaction_none}]
+        'reactions': [{'type': 'NONE', 'count': reaction_none}],
+        'comments': comments
     }
     return data
 

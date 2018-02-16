@@ -16,7 +16,7 @@ def main(data):
     limit = int(data['limit']) if data['limit'] else None
     data_stories = core_utils.get_data_search_stories(searchurl, limit)
 
-    # data_stories = [data_stories[1]]
+    # data_stories = [data_stories[2]]
 
     total_count_post = len(data_stories)
     print("Total post: " + str(total_count_post))
@@ -64,63 +64,64 @@ def save_query(url):
 
 def save_stories(stories, query):
     for storie in stories:
-        # try:
-        # if not Storie.objects.filter(fb_id=storie['id']).exists():
         try:
-            entity, created = Entity.objects.get_or_create(fb_id=storie['from']['id'], name=storie['from']['name'])
-        except Exception:
-            entity, created = Entity.objects.get_or_create(fb_id=storie['id'], name="Group of Facebook")
+            if not Storie.objects.filter(fb_id=storie['id']).exists():
+                try:
+                    entity, created = Entity.objects.get_or_create(fb_id=storie['from']['id'], name=storie['from']['name'])
+                except Exception:
+                    entity, created = Entity.objects.get_or_create(fb_id=storie['id'], name="Group of Facebook")
 
-        try:
-            storie['description']
-        except Exception:
-            storie['description'] = None
-        try:
-            storie['message']
-        except Exception:
-            storie['message'] = None
-        try:
-            storie['name']
-        except Exception:
-            storie['name'] = None
-        try:
-            if storie['picture'] is None:
-                storie['picture'] = '/media/topics/fb_post.gif'
-        except Exception:
-            storie['picture'] = '/media/topics/fb_post.gif'
+                try:
+                    storie['description']
+                except Exception:
+                    storie['description'] = None
+                try:
+                    storie['message']
+                except Exception:
+                    storie['message'] = None
+                try:
+                    storie['name']
+                except Exception:
+                    storie['name'] = None
+                try:
+                    if storie['picture'] is None:
+                        storie['picture'] = '/media/topics/fb_post.gif'
+                except Exception:
+                    storie['picture'] = '/media/topics/fb_post.gif'
 
-        attachment, created = Attachment.objects.get_or_create(title=storie['name'], description=storie['description'], message=storie['message'], media=storie['picture'])
+                attachment, created = Attachment.objects.get_or_create(title=storie['name'], description=storie['description'], message=storie['message'], media=storie['picture'])
 
-        try:
-            storie['shares']['count']
+                try:
+                    storie['shares']['count']
+                except Exception:
+                    storie['shares'] = {'count': 0}
+
+                try:
+                    storie['created_time']
+                except Exception:
+                    storie['created_time'] = timezone.now()
+
+                storie['sentiment'] = get_sentiment(storie['message'])
+
+                storieDB, created = Storie.objects.get_or_create(fb_id=storie['id'], entity=entity, attachment=attachment, date=storie['created_time'], query=query, shares=storie['shares']['count'], sentiment=storie['sentiment'])
+
+                try:
+                    for comment in storie['comments']:
+                        print(comment)
+                        comment['sentiment'] = get_sentiment(comment['message'])
+                        Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB, sentiment=comment['sentiment'])
+                except Exception:
+                    pass
+
+                try:
+                    for reaction in storie['reactions']:
+                        Reaction.objects.get_or_create(type=reaction['type'], count=reaction['count'], storie=storieDB)
+                except Exception:
+                    Reaction.objects.get_or_create(type='NONE', count=0, storie=storieDB)
         except Exception:
-            storie['shares'] = {'count': 0}
-
-        try:
-            storie['created_time']
-        except Exception:
-            storie['created_time'] = timezone.now()
-
-        storie['sentiment'] = get_sentiment(storie['message'])
-
-        storieDB, created = Storie.objects.get_or_create(fb_id=storie['id'], entity=entity, attachment=attachment, date=storie['created_time'], query=query, shares=storie['shares']['count'], sentiment=storie['sentiment'])
-
-        try:
-            for comment in storie['comments']:
-                comment['sentiment'] = get_sentiment(comment['message'])
-                Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB, sentiment=comment['sentiment'])
-        except Exception:
-            pass
-
-        try:
-            for reaction in storie['reactions']:
-                Reaction.objects.get_or_create(type=reaction['type'], count=reaction['count'], storie=storieDB)
-        except Exception:
-            Reaction.objects.get_or_create(type='NONE', count=0, storie=storieDB)
-        # except Exception:
-        #     print("--- Error Data Storie ---  ")
-        #     print(storie)
-        #     print("")
+            print("--- Error Data Storie ---  ")
+            print(storie)
+            print("")
 
 
 def get_data_storie_api(fb_id):
