@@ -35,6 +35,7 @@ class Comment(models.Model):
     date = models.DateTimeField()
     image = models.CharField(max_length=1000, default=None, null=True)
     storie = models.ForeignKey(Storie, on_delete=models.CASCADE)
+    sentiment = models.DecimalField(default=0, max_digits=30, decimal_places=15)
 
 
 class Reaction(models.Model):

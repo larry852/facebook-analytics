@@ -16,7 +16,7 @@ def main(data):
     limit = int(data['limit']) if data['limit'] else None
     data_stories = core_utils.get_data_search_stories(searchurl, limit)
 
-    # data_stories = [data_stories[1]]
+    data_stories = [data_stories[1]]
 
     total_count_post = len(data_stories)
     print("Total post: " + str(total_count_post))
@@ -107,7 +107,8 @@ def save_stories(stories, query):
 
         try:
             for comment in storie['comments']:
-                Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB)
+                comment['sentiment'] = get_sentiment(comment['message'])
+                Comment.objects.get_or_create(fb_id=comment['fb_id'], message=comment['message'], date=comment['date'], storie=storieDB, sentiment=comment['sentiment'])
         except Exception:
             pass
 

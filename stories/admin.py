@@ -40,9 +40,10 @@ class AdminStorie(admin.ModelAdmin):
 
 @admin.register(Comment)
 class AdminComment(admin.ModelAdmin):
-    list_display = ('url_html', 'message', 'image_html_storie', 'date')
+    list_display = ('url_html', 'message', 'image_html_storie', 'range_sentiment_comment')
     actions = ['delete']
     list_display_links = None
+    ordering = ('-storie', '-sentiment')
 
     def has_add_permission(self, request):
         return False
@@ -58,6 +59,15 @@ class AdminComment(admin.ModelAdmin):
 
     image_html_storie.short_description = 'post'
     image_html_storie.admin_order_field = 'storie'
+
+    def range_sentiment_comment(self, obj):
+        score = round(obj.sentiment, 2)
+        if -1 <= score <= -0.25:
+            return mark_safe('<span style="background-color: #e53935;color: #fff;">{} / {}</span>'.format('Negative', score))
+        elif 0.25 <= score <= 1:
+            return mark_safe('<span style="background-color: #388e3c;color: #fff;">{} / {}</span>'.format('Positive', score))
+        else:
+            return mark_safe('<span style="background-color: #ffe57f;">{} / {}</span>'.format('Neutral', score))
 
 
 @admin.register(Query)
