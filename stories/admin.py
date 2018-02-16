@@ -5,10 +5,10 @@ from django.utils.safestring import mark_safe
 
 @admin.register(Storie)
 class AdminStorie(admin.ModelAdmin):
-    list_display = ('post', 'message', 'sentiment')
+    list_display = ('post', 'message', 'range_sentiment_post')
     actions = ['delete']
     list_display_links = None
-    # ordering = ('-reaction__count', '-shares')
+    ordering = ('-sentiment',)
 
     def has_add_permission(self, request):
         return False
@@ -24,6 +24,18 @@ class AdminStorie(admin.ModelAdmin):
 
     message.short_message = 'message'
     message.admin_order_field = 'attachment__message'
+
+    def range_sentiment_post(self, obj):
+        score = round(obj.sentiment, 2)
+        if -1 <= score <= -0.25:
+            return mark_safe('<span style="background-color: #e53935;color: #fff;">{} / {}</span>'.format('Negative', score))
+        elif 0.25 <= score <= 1:
+            return mark_safe('<span style="background-color: #388e3c;color: #fff;">{} / {}</span>'.format('Positive', score))
+        else:
+            return mark_safe('<span style="background-color: #ffe57f;">{} / {}</span>'.format('Neutral', score))
+
+    range_sentiment_post.short_message = 'range sentiment post'
+    range_sentiment_post.admin_order_field = 'sentiment'
 
 
 @admin.register(Comment)
