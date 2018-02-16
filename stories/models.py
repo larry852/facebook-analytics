@@ -26,6 +26,7 @@ class Storie(models.Model):
     date = models.DateTimeField()
     query = models.ForeignKey(Query, on_delete=models.CASCADE)
     shares = models.IntegerField(default=0)
+    sentiment = models.DecimalField(default=0, max_digits=30, decimal_places=15)
 
 
 class Comment(models.Model):
