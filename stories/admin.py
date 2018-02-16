@@ -39,11 +39,11 @@ class AdminStorie(admin.ModelAdmin):
             score = score / len(comments)
             score = round(obj.sentiment, 2)
             if -1 <= score <= -0.25:
-                return mark_safe('<span style="background-color: #e53935;color: #fff;">{} / {}</span><br><br><a target="_blank" href="/admin/stories/comment/?storie__id__exact={}">List comments</a>'.format('Negative', score, obj.id))
+                return mark_safe('<span style="background-color: #e53935;color: #fff;">{} / {}</span>'.format('Negative', score, obj.id))
             elif 0.25 <= score <= 1:
-                return mark_safe('<span style="background-color: #388e3c;color: #fff;">{} / {}</span><br><br><a target="_blank" href="/admin/stories/comment/?storie__id__exact={}">List comments</a>'.format('Positive', score, obj.id))
+                return mark_safe('<span style="background-color: #388e3c;color: #fff;">{} / {}</span>'.format('Positive', score, obj.id))
             else:
-                return mark_safe('<span style="background-color: #ffe57f;">{} / {}</span><br><br><a target="_blank" href="/admin/stories/comment/?storie__id__exact={}">List comments</a>'.format('Neutral', score, obj.id))
+                return mark_safe('<span style="background-color: #ffe57f;">{} / {}</span>'.format('Neutral', score, obj.id))
         return "No comments"
 
     def count_sentiment_comment(self, obj):
